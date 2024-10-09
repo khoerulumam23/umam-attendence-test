@@ -11,12 +11,19 @@ const record = async (req, res) => {
             user_id,
             location,
             ip_address,
-            photo_url
+            photo_url,
         });
 
-        res.json({ message: 'Attendance recorded successfully!' });
+        return res.status(201).json({
+            success: true,
+            message: 'Attendance recorded successfully!',
+        });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to record attendance',
+            error: err.message,
+        });
     }
 }
 
@@ -26,7 +33,7 @@ const report = async (req, res) => {
 
     try {
         const attendance = await db.Attendance.findAll({
-            where: { user_id: user_id }
+            where: { user_id }
         });
 
         const formattedAttendance = attendance.map(record => {
@@ -38,15 +45,23 @@ const report = async (req, res) => {
                 ip_address: record.ip_address,
                 photo_url: record.photo_url,
                 timestamp: record.timestamp,
-                localTime: localTime
+                localTime: localTime,
             };
         });
 
-        res.json(formattedAttendance);
+        return res.status(200).json({
+            success: true,
+            data: formattedAttendance,
+        });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to generate report',
+            error: err.message,
+        });
     }
 };
+
 
 module.exports = {
     record,
