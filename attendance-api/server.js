@@ -7,11 +7,13 @@ const port = process.env.PORT;
 const app = express();
 
 const authRoute = require("./routes/auth.routes");
+const attendenceRoute = require("./routes/attendence.routes");
 
 app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1", authRoute);
+app.use("/api/v1", attendenceRoute);
 
 app.listen(port, (error) => {
     if (error) {

@@ -80,7 +80,6 @@ const updateProfile = async (req, res) => {
     }
 };
 
-
 module.exports = {
     registerUser,
     signInUser,
